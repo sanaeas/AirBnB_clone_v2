@@ -5,7 +5,6 @@ from sqlalchemy import Column, Integer, Float, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 import shlex
 from os import getenv
-from models import storage
 
 PlaceAmenity = Table(
         'place_amenity', Base.metadata,
@@ -32,18 +31,14 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        user = relationship('User', back_populates='places')
-        cities = relationship('City', back_populates='places')
         reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                               back_populates='place')
+                               backref='place')
 
-        amenities = relationship("Amenity", secondary=PlaceAmenity,
-                                 viewonly=False,
-                                 back_populates="place_amenities")
     else:
         @property
         def reviews(self):
             """ Returns list of reviews.id """
+            from models import storage
             rev_list = []
             reviews_list = []
             for elem in storage.all():
