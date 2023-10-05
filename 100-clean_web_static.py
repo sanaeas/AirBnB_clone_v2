@@ -12,12 +12,17 @@ def do_clean(number=0):
     """
     Delete outdated archives and keeps the specified number
     """
-    if int(number) < 1:
+    if int(number) == 0:
         number = 1
-    number = int(number) + 1
+    else:
+        number = int(number)
 
-    with lcd('versions'):
-        local('ls -t | tail -n +{} | xargs -I {{}} rm {{}}'.format(number))
+    with lcd("versions"):
+        archives = sorted(os.listdir("."))
+        archives_to_delete = archives[:-number]
+        [local("rm -f {}".format(archive)) for archive in archives_to_delete]
 
-    with cd('/data/web_static/releases'):
-        run('ls -t | tail -n +{} | xargs -I {{}} rm -rf {{}}'.format(number))
+    with cd("/data/web_static/releases"):
+        archives = run("ls -tr | grep 'web_static_'").split()
+        archives_to_delete = archives[:-number]
+        [run("rm -rf {}".format(archive)) for archive in archives_to_delete]
