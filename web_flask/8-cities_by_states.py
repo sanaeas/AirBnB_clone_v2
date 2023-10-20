@@ -5,6 +5,7 @@ Start a Flask web application
 from flask import Flask, render_template
 from models import storage
 from models.state import State
+from models.city import City
 
 
 app = Flask(__name__)
@@ -14,7 +15,8 @@ app = Flask(__name__)
 def cities():
     """Display an HTML page that lists all cities by state"""
     states = storage.all(State)
-    return render_template('8-cities_by_states.html', states=states)
+    cities = storage.all(City)
+    return render_template('8-cities_by_states.html', states=states, cities=cities)
 
 
 @app.teardown_appcontext
