@@ -50,7 +50,7 @@
                 {% for place in places.values()|sort(attribute='name') %}
                     <ARTICLE>
                         <DIV class="headline">
-                            <H2>{{ place.name }}</H2>
+                            <H2>{{ place.name|safe }}</H2>
                             <DIV class="price_by_night">${{ place.price_by_night }}</DIV>
                         </DIV>
                         <DIV class="information">
@@ -68,7 +68,7 @@
                             </DIV>
                         </DIV>
                         <DIV class="user"><B>Owner</B>: {{ place.user.first_name }} {{ place.user.last_name }}</DIV>
-                        <DIV class="description">{{ place.description }}</DIV>
+                        <DIV class="description">{{ place.description|safe }}</DIV>
                     </ARTICLE>
                 {% endfor %}
 		</DIV>
