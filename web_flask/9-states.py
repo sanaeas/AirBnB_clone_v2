@@ -2,10 +2,9 @@
 """
 Start a Flask web application
 """
-from flask import Flask, render_template, abort
+from flask import Flask, render_template
 from models import storage
 from models.state import State
-from models.city import City
 
 
 app = Flask(__name__)
@@ -19,12 +18,12 @@ def list_states():
     return render_template('9-states.html', states=sorted_states)
 
 
-@app.route('/states/<state_id>', strict_slashes=False)
-def list_state_cities(state_id):
+@app.route('/states/<id>', strict_slashes=False)
+def list_state_cities(id):
     """Display cities in a state."""
     state = None
     for state_obj in storage.all(State).values():
-        if state_obj.id == state_id:
+        if state_obj.id == id:
             state = state_obj
             break
     if state:
